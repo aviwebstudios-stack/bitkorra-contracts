@@ -1,0 +1,973 @@
+{
+  "address": "92jgXoEDydnpZhUFbcqoFf7aPasLGPP1S2E7CcpLYuPR",
+  "metadata": {
+    "name": "beryl_names",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Beryl Names: name.beryl usernames as Solana accounts owned by a wallet"
+  },
+  "instructions": [
+    {
+      "name": "clear_primary",
+      "docs": [
+        "Removes the wallet's primary name (its rent comes back)."
+      ],
+      "discriminator": [
+        115,
+        134,
+        44,
+        149,
+        214,
+        9,
+        248,
+        61
+      ],
+      "accounts": [
+        {
+          "name": "primary",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  109,
+                  97,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Creates the config. Only the program's upgrade authority can, and only once."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program",
+          "docs": [
+            "This program: its ProgramData must be the one below."
+          ],
+          "address": "92jgXoEDydnpZhUFbcqoFf7aPasLGPP1S2E7CcpLYuPR"
+        },
+        {
+          "name": "program_data",
+          "docs": [
+            "Only the program's upgrade authority can set up the config."
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "register",
+      "discriminator": [
+        211,
+        124,
+        67,
+        15,
+        211,
+        194,
+        178,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "name_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "docs": [
+        "Gives the name up: its account closes and its rent goes back to the",
+        "owner. If it was their primary name, pass that account and it closes too."
+      ],
+      "discriminator": [
+        253,
+        249,
+        15,
+        206,
+        28,
+        127,
+        193,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "name_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "name_record.name",
+                "account": "NameRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "primary",
+          "writable": true,
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  109,
+                  97,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "name_record"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_authority",
+      "docs": [
+        "Hands the reserved-names authority to another key."
+      ],
+      "discriminator": [
+        133,
+        250,
+        37,
+        21,
+        110,
+        163,
+        26,
+        121
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "set_primary",
+      "docs": [
+        "Makes this name the wallet's primary name (one per wallet)."
+      ],
+      "discriminator": [
+        93,
+        240,
+        24,
+        104,
+        144,
+        62,
+        216,
+        95
+      ],
+      "accounts": [
+        {
+          "name": "name_record",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "name_record.name",
+                "account": "NameRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "primary",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  109,
+                  97,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "name_record"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_name",
+      "docs": [
+        "Gives the name to another wallet. Its records are cleared, so money",
+        "sent to the name can never reach the old owner's addresses."
+      ],
+      "discriminator": [
+        32,
+        215,
+        182,
+        130,
+        12,
+        106,
+        157,
+        75
+      ],
+      "accounts": [
+        {
+          "name": "name_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "name_record.name",
+                "account": "NameRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "name_record"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_owner",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "update_records",
+      "docs": [
+        "Replaces the name's records (pass None to clear one)."
+      ],
+      "discriminator": [
+        29,
+        132,
+        97,
+        59,
+        230,
+        124,
+        119,
+        127
+      ],
+      "accounts": [
+        {
+          "name": "name_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "name_record.name",
+                "account": "NameRecord"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "name_record"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "records",
+          "type": {
+            "defined": {
+              "name": "Records"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "NameRecord",
+      "discriminator": [
+        254,
+        22,
+        17,
+        161,
+        229,
+        49,
+        238,
+        105
+      ]
+    },
+    {
+      "name": "PrimaryName",
+      "discriminator": [
+        69,
+        138,
+        60,
+        236,
+        212,
+        77,
+        160,
+        109
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AuthoritySet",
+      "discriminator": [
+        122,
+        178,
+        145,
+        44,
+        172,
+        30,
+        25,
+        16
+      ]
+    },
+    {
+      "name": "NameRegistered",
+      "discriminator": [
+        93,
+        190,
+        149,
+        226,
+        22,
+        31,
+        245,
+        68
+      ]
+    },
+    {
+      "name": "NameReleased",
+      "discriminator": [
+        40,
+        189,
+        0,
+        197,
+        89,
+        167,
+        209,
+        69
+      ]
+    },
+    {
+      "name": "NameTransferred",
+      "discriminator": [
+        202,
+        124,
+        183,
+        114,
+        26,
+        133,
+        145,
+        37
+      ]
+    },
+    {
+      "name": "PrimaryCleared",
+      "discriminator": [
+        18,
+        65,
+        223,
+        109,
+        119,
+        87,
+        24,
+        162
+      ]
+    },
+    {
+      "name": "PrimarySet",
+      "discriminator": [
+        43,
+        1,
+        235,
+        134,
+        243,
+        144,
+        139,
+        143
+      ]
+    },
+    {
+      "name": "RecordsUpdated",
+      "discriminator": [
+        27,
+        181,
+        36,
+        210,
+        23,
+        205,
+        101,
+        84
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NameTooShort",
+      "msg": "A name has 3 to 32 characters."
+    },
+    {
+      "code": 6001,
+      "name": "NameTooLong",
+      "msg": "A name has 3 to 32 characters."
+    },
+    {
+      "code": 6002,
+      "name": "NameBadCharacter",
+      "msg": "A name can only use lowercase a-z, 0-9 and the hyphen."
+    },
+    {
+      "code": 6003,
+      "name": "NameEdgeHyphen",
+      "msg": "A name can't start or end with a hyphen."
+    },
+    {
+      "code": 6004,
+      "name": "ReservedName",
+      "msg": "That name is reserved."
+    },
+    {
+      "code": 6005,
+      "name": "NotOwner",
+      "msg": "Only the name's owner can do that."
+    },
+    {
+      "code": 6006,
+      "name": "NotAuthority",
+      "msg": "Only the program authority can do that."
+    },
+    {
+      "code": 6007,
+      "name": "SameOwner",
+      "msg": "That's already the owner."
+    },
+    {
+      "code": 6008,
+      "name": "InvalidNewOwner",
+      "msg": "That isn't a valid new owner."
+    },
+    {
+      "code": 6009,
+      "name": "InvalidBtcRecord",
+      "msg": "That Bitcoin address isn't valid."
+    },
+    {
+      "code": 6010,
+      "name": "InvalidAvatarUri",
+      "msg": "The avatar must be an https:// or ipfs:// link of up to 200 characters."
+    },
+    {
+      "code": 6011,
+      "name": "PrimaryMismatch",
+      "msg": "That primary name belongs to another wallet or name."
+    }
+  ],
+  "types": [
+    {
+      "name": "AuthoritySet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config",
+      "docs": [
+        "One per program: who may register reserved names.",
+        "PDA [\"config\"]."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NameRecord",
+      "docs": [
+        "A registered name. PDA [\"name\", name bytes]: one account per name, so a",
+        "name can only exist once, and anyone can find it from the name alone.",
+        "`owner` comes first so it sits at a fixed offset (8, after the",
+        "discriminator): \"every name this wallet owns\" is one getProgramAccounts",
+        "call with a memcmp filter."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "records",
+            "type": {
+              "defined": {
+                "name": "Records"
+              }
+            }
+          },
+          {
+            "name": "registered_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NameRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NameReleased",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NameTransferred",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "type": "pubkey"
+          },
+          {
+            "name": "to",
+            "type": "pubkey"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrimaryCleared",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrimaryName",
+      "docs": [
+        "A wallet's chosen name (reverse lookup). PDA [\"primary\", wallet].",
+        "Only trusted when the name's record is still owned by the same wallet:",
+        "after a transfer the old owner's primary points at a name they no",
+        "longer own, and resolvers must ignore it."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrimarySet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Records",
+      "docs": [
+        "Where the owner wants to be paid, per network, and their picture.",
+        "Cleared when the name changes owner."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "evm",
+            "docs": [
+              "An Ethereum (Sepolia) address, as its 20 bytes."
+            ],
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  20
+                ]
+              }
+            }
+          },
+          {
+            "name": "sol",
+            "docs": [
+              "A Solana address."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "btc",
+            "docs": [
+              "A Bitcoin (signet) address, as text."
+            ],
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "avatar",
+            "docs": [
+              "https:// or ipfs:// only."
+            ],
+            "type": {
+              "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "RecordsUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}

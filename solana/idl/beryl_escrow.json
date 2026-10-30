@@ -1,0 +1,1874 @@
+{
+  "address": "8wDapxboCTEKfBzNQzrzZUnspmTixKFfCuNmUuQLrcDA",
+  "metadata": {
+    "name": "beryl_escrow",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Beryl Escrow: P2P escrow for SOL or an SPL stablecoin, released to the buyer, refunded to the seller, or resolved by an arbiter"
+  },
+  "instructions": [
+    {
+      "name": "accept_arbiter",
+      "docs": [
+        "Step 2: the proposed arbiter signs to take over."
+      ],
+      "discriminator": [
+        245,
+        151,
+        183,
+        50,
+        245,
+        136,
+        54,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "new_key",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "accept_owner",
+      "discriminator": [
+        176,
+        23,
+        41,
+        28,
+        23,
+        111,
+        8,
+        4
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "new_key",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel",
+      "docs": [
+        "The buyer cancels before paying: it goes back to the seller at once."
+      ],
+      "discriminator": [
+        232,
+        219,
+        223,
+        41,
+        219,
+        236,
+        220,
+        190
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "buyer_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "seller_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "treasury_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "mint",
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "optional": true,
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fund_sol",
+      "discriminator": [
+        156,
+        129,
+        219,
+        34,
+        161,
+        214,
+        231,
+        56
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "seller"
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "buyer",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "deadline",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "fund_token",
+      "discriminator": [
+        97,
+        117,
+        153,
+        75,
+        80,
+        119,
+        17,
+        52
+      ],
+      "accounts": [
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "seller_token",
+          "writable": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "seller"
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "buyer",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "deadline",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Creates the config. Only the program's upgrade authority can, and only once."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "program",
+          "address": "8wDapxboCTEKfBzNQzrzZUnspmTixKFfCuNmUuQLrcDA"
+        },
+        {
+          "name": "program_data"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "owner",
+          "type": "pubkey"
+        },
+        {
+          "name": "arbiter",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "mark_paid",
+      "docs": [
+        "The buyer says they paid, before the deadline. The seller can no longer reclaim."
+      ],
+      "discriminator": [
+        51,
+        120,
+        9,
+        160,
+        70,
+        29,
+        18,
+        205
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "open_dispute",
+      "docs": [
+        "After \"paid\", either side asks Beryl to decide."
+      ],
+      "discriminator": [
+        137,
+        25,
+        99,
+        119,
+        23,
+        223,
+        161,
+        42
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "propose_arbiter",
+      "docs": [
+        "Step 1 of a new arbiter (the owner proposes). The default key cancels."
+      ],
+      "discriminator": [
+        6,
+        244,
+        39,
+        34,
+        254,
+        166,
+        166,
+        100
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_arbiter",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "propose_owner",
+      "docs": [
+        "Step 1 of a new owner. The default key cancels."
+      ],
+      "discriminator": [
+        90,
+        57,
+        141,
+        110,
+        196,
+        241,
+        172,
+        39
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_owner",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "refund",
+      "docs": [
+        "The seller takes it back after the deadline, if the buyer never marked it paid."
+      ],
+      "discriminator": [
+        2,
+        96,
+        183,
+        251,
+        63,
+        208,
+        46,
+        46
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "buyer_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "seller_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "treasury_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "mint",
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "optional": true,
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "release",
+      "docs": [
+        "The seller releases to the buyer, at any time (also during a dispute)."
+      ],
+      "discriminator": [
+        253,
+        249,
+        15,
+        206,
+        28,
+        127,
+        193,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "buyer_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "seller_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "treasury_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "mint",
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "optional": true,
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolve",
+      "docs": [
+        "The arbiter decides a dispute: to the buyer, or back to the seller."
+      ],
+      "discriminator": [
+        246,
+        150,
+        236,
+        206,
+        108,
+        63,
+        58,
+        10
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "signer": true
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "escrow.seller",
+                "account": "Escrow"
+              },
+              {
+                "kind": "account",
+                "path": "escrow.order_id",
+                "account": "Escrow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "seller",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "buyer_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "seller_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "treasury_token",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "mint",
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "optional": true,
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "to_buyer",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "set_fee",
+      "discriminator": [
+        18,
+        154,
+        24,
+        18,
+        237,
+        214,
+        19,
+        80
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "set_treasury",
+      "discriminator": [
+        57,
+        97,
+        196,
+        95,
+        195,
+        206,
+        106,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "Escrow",
+      "discriminator": [
+        31,
+        213,
+        123,
+        187,
+        186,
+        22,
+        218,
+        155
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "ArbiterAccepted",
+      "discriminator": [
+        240,
+        251,
+        112,
+        20,
+        57,
+        2,
+        164,
+        53
+      ]
+    },
+    {
+      "name": "ArbiterProposed",
+      "discriminator": [
+        8,
+        66,
+        229,
+        14,
+        50,
+        106,
+        22,
+        91
+      ]
+    },
+    {
+      "name": "ConfigInitialized",
+      "discriminator": [
+        181,
+        49,
+        200,
+        156,
+        19,
+        167,
+        178,
+        91
+      ]
+    },
+    {
+      "name": "DisputeOpened",
+      "discriminator": [
+        239,
+        222,
+        102,
+        235,
+        193,
+        85,
+        1,
+        214
+      ]
+    },
+    {
+      "name": "EscrowFunded",
+      "discriminator": [
+        228,
+        243,
+        166,
+        74,
+        22,
+        167,
+        157,
+        244
+      ]
+    },
+    {
+      "name": "EscrowSettled",
+      "discriminator": [
+        97,
+        27,
+        150,
+        55,
+        203,
+        179,
+        173,
+        23
+      ]
+    },
+    {
+      "name": "FeeSet",
+      "discriminator": [
+        113,
+        74,
+        216,
+        72,
+        193,
+        87,
+        4,
+        232
+      ]
+    },
+    {
+      "name": "MarkedPaid",
+      "discriminator": [
+        109,
+        88,
+        128,
+        211,
+        251,
+        49,
+        219,
+        159
+      ]
+    },
+    {
+      "name": "OwnerAccepted",
+      "discriminator": [
+        115,
+        49,
+        65,
+        183,
+        72,
+        123,
+        41,
+        139
+      ]
+    },
+    {
+      "name": "OwnerProposed",
+      "discriminator": [
+        76,
+        98,
+        192,
+        30,
+        68,
+        48,
+        43,
+        188
+      ]
+    },
+    {
+      "name": "TreasurySet",
+      "discriminator": [
+        69,
+        231,
+        163,
+        135,
+        254,
+        194,
+        109,
+        166
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotOwner",
+      "msg": "Only the program owner can do that."
+    },
+    {
+      "code": 6001,
+      "name": "NotArbiter",
+      "msg": "Only the arbiter can resolve a dispute."
+    },
+    {
+      "code": 6002,
+      "name": "NotSeller",
+      "msg": "Only the seller can do that."
+    },
+    {
+      "code": 6003,
+      "name": "NotBuyer",
+      "msg": "Only the buyer can do that."
+    },
+    {
+      "code": 6004,
+      "name": "NotParty",
+      "msg": "Only the buyer or the seller can do that."
+    },
+    {
+      "code": 6005,
+      "name": "FeeTooHigh",
+      "msg": "The fee can't be more than 2%."
+    },
+    {
+      "code": 6006,
+      "name": "ZeroAmount",
+      "msg": "The amount must be more than zero."
+    },
+    {
+      "code": 6007,
+      "name": "BadBuyer",
+      "msg": "The buyer must be someone other than the seller."
+    },
+    {
+      "code": 6008,
+      "name": "BadDeadline",
+      "msg": "The payment window must end in the future, within a day."
+    },
+    {
+      "code": 6009,
+      "name": "WrongState",
+      "msg": "The escrow isn't in a state that allows this."
+    },
+    {
+      "code": 6010,
+      "name": "DeadlinePassed",
+      "msg": "The payment window has ended."
+    },
+    {
+      "code": 6011,
+      "name": "DeadlineNotPassed",
+      "msg": "The payment window hasn't ended yet."
+    },
+    {
+      "code": 6012,
+      "name": "WrongAccount",
+      "msg": "That isn't this escrow's buyer, seller or treasury."
+    },
+    {
+      "code": 6013,
+      "name": "WrongMint",
+      "msg": "That token isn't accepted."
+    },
+    {
+      "code": 6014,
+      "name": "TokenAccountsMissing",
+      "msg": "A token escrow needs its token accounts."
+    },
+    {
+      "code": 6015,
+      "name": "MathOverflow",
+      "msg": "The amount is too large."
+    },
+    {
+      "code": 6016,
+      "name": "NothingPending",
+      "msg": "There's no key waiting to accept."
+    },
+    {
+      "code": 6017,
+      "name": "NotPending",
+      "msg": "Only the proposed key can accept."
+    },
+    {
+      "code": 6018,
+      "name": "InvalidKey",
+      "msg": "That isn't a valid key."
+    }
+  ],
+  "types": [
+    {
+      "name": "ArbiterAccepted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old",
+            "type": "pubkey"
+          },
+          {
+            "name": "new",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ArbiterProposed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pending",
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config",
+      "docs": [
+        "One per program. PDA [\"config\"]."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "docs": [
+              "Sets the fee, the treasury and the arbiter; hands itself over in two steps."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_owner",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "arbiter",
+            "docs": [
+              "The only key that can resolve a disputed escrow. Changed in two steps."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_arbiter",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "The one SPL token accepted (devnet: Circle's USDC). Classic SPL Token only."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_bps",
+            "docs": [
+              "Basis points taken from a release to the buyer, never above MAX_FEE_BPS."
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ConfigInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "arbiter",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Currency",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Sol"
+          },
+          {
+            "name": "Token"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DisputeOpened",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "by",
+            "type": "pubkey"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Escrow",
+      "docs": [
+        "One order's escrow. PDA [\"escrow\", seller, order_id]. `order_id` is a hash",
+        "of Beryl's order id, never anything personal. SOL is held in this account's",
+        "own lamports; tokens in the vault PDA [\"vault\", escrow]."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "currency",
+            "type": {
+              "defined": {
+                "name": "Currency"
+              }
+            }
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "The token's mint; the default key for SOL."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "docs": [
+              "The fee at funding time: a later fee change never touches an open escrow."
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "deadline",
+            "docs": [
+              "Unix time by which the buyer must mark it paid."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": {
+                "name": "EscrowState"
+              }
+            }
+          },
+          {
+            "name": "funded_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowFunded",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "seller",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "None = SOL."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowSettled",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "by",
+            "type": "pubkey"
+          },
+          {
+            "name": "to_buyer",
+            "type": "u64"
+          },
+          {
+            "name": "to_seller",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EscrowState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "Paid"
+          },
+          {
+            "name": "Disputed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeeSet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old_bps",
+            "type": "u16"
+          },
+          {
+            "name": "new_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarkedPaid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Outcome",
+      "docs": [
+        "How an escrow ended (in the EscrowSettled event; the account is closed)."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Released"
+          },
+          {
+            "name": "Refunded"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "ResolvedBuyer"
+          },
+          {
+            "name": "ResolvedSeller"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OwnerAccepted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old",
+            "type": "pubkey"
+          },
+          {
+            "name": "new",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OwnerProposed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pending",
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TreasurySet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old",
+            "type": "pubkey"
+          },
+          {
+            "name": "new",
+            "type": "pubkey"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[toolchain]
+anchor_version = "1.2.1"
+solana_version = "4.3.2"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+beryl_names = "92jgXoEDydnpZhUFbcqoFf7aPasLGPP1S2E7CcpLYuPR"
+beryl_tips = "B9oecLNJC7SCTMbZc6G7UJSwj9mUpL9AwF6r3CFE5CEf"
+beryl_escrow = "8wDapxboCTEKfBzNQzrzZUnspmTixKFfCuNmUuQLrcDA"
+
+[programs.devnet]
+beryl_names = "92jgXoEDydnpZhUFbcqoFf7aPasLGPP1S2E7CcpLYuPR"
+beryl_tips = "B9oecLNJC7SCTMbZc6G7UJSwj9mUpL9AwF6r3CFE5CEf"
+beryl_escrow = "8wDapxboCTEKfBzNQzrzZUnspmTixKFfCuNmUuQLrcDA"
+
+[provider]
+cluster = "devnet"
+# The throwaway devnet deployer. Never in the repo: scripts/names-deploy.sh writes it here
+# from BERYL_NAMES_DEPLOYER_KEYPAIR (.env.local) and removes it afterwards.
+wallet = "~/.config/beryl/devnet-deployer.json"
+
+[scripts]
+test = "cargo test"

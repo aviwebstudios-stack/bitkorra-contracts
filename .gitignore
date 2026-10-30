@@ -1,0 +1,18 @@
+# Keys and settings never go in this repository.
+.env
+.env.*
+*-keypair.json
+*.json.key
+id.json
+
+# Foundry
+contracts/lib/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Anchor / Rust
+solana/target
+solana/.anchor/
+solana/test-ledger/
+target/

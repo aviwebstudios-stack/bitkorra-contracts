@@ -1,0 +1,35 @@
+# Phase I-6: Beryva Swap, Beryva's own constant-product AMM (Uniswap V2 style).
+# Test networks only (Sepolia). Mainnet use is a pause point: docs/contracts.md.
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.30"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+bytecode_hash = "ipfs"
+remappings = [
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+  "forge-std/=lib/forge-std/src/",
+]
+
+[fuzz]
+runs = 1000
+seed = "0xbe7a"
+
+[invariant]
+runs = 256
+depth = 64
+fail_on_revert = false
+
+[rpc_endpoints]
+sepolia = "${BERYVA_SEPOLIA_RPC_URL}"
+
+[lint]
+# Lint the contracts that ship; tests and scripts use plain mock-token calls on purpose.
+ignore = ["test/**", "script/**"]
+exclude_lints = ["mixed-case-variable"]

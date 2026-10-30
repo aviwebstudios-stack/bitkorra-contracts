@@ -1,0 +1,7 @@
+# Pinned libraries are installed, not committed (see docs/contracts.md):
+#   forge install --no-git OpenZeppelin/openzeppelin-contracts@v5.7.0 foundry-rs/forge-std@v1.17.0
+lib/
+out/
+cache/
+broadcast/
+.env

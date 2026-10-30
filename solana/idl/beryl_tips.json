@@ -1,0 +1,1565 @@
+{
+  "address": "B9oecLNJC7SCTMbZc6G7UJSwj9mUpL9AwF6r3CFE5CEf",
+  "metadata": {
+    "name": "beryl_tips",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Beryl Tips: creator tips and paid posts in SOL or an SPL stablecoin, paid straight to the creator"
+  },
+  "instructions": [
+    {
+      "name": "accept_authority",
+      "docs": [
+        "Step 2: the proposed key signs to take over."
+      ],
+      "discriminator": [
+        107,
+        86,
+        198,
+        91,
+        33,
+        12,
+        107,
+        160
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "new_authority",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "buy_sol",
+      "docs": [
+        "Buys a SOL-priced post. `max_price` is the price the buyer saw: a",
+        "higher price now fails instead of charging more."
+      ],
+      "discriminator": [
+        206,
+        59,
+        125,
+        30,
+        202,
+        248,
+        111,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.creator",
+                "account": "Post"
+              },
+              {
+                "kind": "account",
+                "path": "post.post_id",
+                "account": "Post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true
+        },
+        {
+          "name": "access",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  101,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post"
+              },
+              {
+                "kind": "account",
+                "path": "buyer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "max_price",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "buy_token",
+      "discriminator": [
+        138,
+        127,
+        14,
+        91,
+        38,
+        87,
+        115,
+        105
+      ],
+      "accounts": [
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.creator",
+                "account": "Post"
+              },
+              {
+                "kind": "account",
+                "path": "post.post_id",
+                "account": "Post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "buyer_token",
+          "writable": true
+        },
+        {
+          "name": "creator"
+        },
+        {
+          "name": "creator_token",
+          "writable": true
+        },
+        {
+          "name": "access",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  99,
+                  99,
+                  101,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post"
+              },
+              {
+                "kind": "account",
+                "path": "buyer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury_token",
+          "docs": [
+            "Needed only while the fee is above 0; checked in the instruction."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "max_price",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Creates the config. Only the program's upgrade authority can, and only once."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint",
+          "docs": [
+            "The one SPL token accepted. Must be a classic SPL Token mint."
+          ]
+        },
+        {
+          "name": "program",
+          "docs": [
+            "This program: its ProgramData must be the one below."
+          ],
+          "address": "B9oecLNJC7SCTMbZc6G7UJSwj9mUpL9AwF6r3CFE5CEf"
+        },
+        {
+          "name": "program_data",
+          "docs": [
+            "Only the program's upgrade authority can set up the config."
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "authority",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "propose_authority",
+      "docs": [
+        "Step 1 of handing over the authority. Pass the default key to cancel."
+      ],
+      "discriminator": [
+        20,
+        148,
+        236,
+        198,
+        76,
+        119,
+        99,
+        142
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "register_post",
+      "discriminator": [
+        166,
+        184,
+        95,
+        242,
+        168,
+        251,
+        112,
+        230
+      ],
+      "accounts": [
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "post_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "price",
+          "type": "u64"
+        },
+        {
+          "name": "currency",
+          "type": {
+            "defined": {
+              "name": "Currency"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set_fee",
+      "discriminator": [
+        18,
+        154,
+        24,
+        18,
+        237,
+        214,
+        19,
+        80
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "set_sales_open",
+      "docs": [
+        "Closes (false) or reopens (true) sales. Existing access stays."
+      ],
+      "discriminator": [
+        70,
+        35,
+        239,
+        43,
+        67,
+        156,
+        20,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "post.post_id",
+                "account": "Post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "signer": true,
+          "relations": [
+            "post"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "open",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "set_treasury",
+      "discriminator": [
+        57,
+        97,
+        196,
+        95,
+        195,
+        206,
+        106,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "tip_sol",
+      "discriminator": [
+        111,
+        81,
+        145,
+        255,
+        235,
+        229,
+        103,
+        75
+      ],
+      "accounts": [
+        {
+          "name": "tipper",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "creator",
+          "docs": [
+            "A wallet (owned by the system program), never a program account."
+          ],
+          "writable": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "reference",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "tip_token",
+      "discriminator": [
+        100,
+        75,
+        23,
+        52,
+        214,
+        128,
+        217,
+        41
+      ],
+      "accounts": [
+        {
+          "name": "tipper",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "tipper_token",
+          "writable": true
+        },
+        {
+          "name": "creator"
+        },
+        {
+          "name": "creator_token",
+          "writable": true
+        },
+        {
+          "name": "treasury_token",
+          "docs": [
+            "Needed only while the fee is above 0; checked in the instruction."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "reference",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "update_price",
+      "discriminator": [
+        61,
+        34,
+        117,
+        155,
+        75,
+        34,
+        123,
+        208
+      ],
+      "accounts": [
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "post.post_id",
+                "account": "Post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "signer": true,
+          "relations": [
+            "post"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "new_price",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Access",
+      "discriminator": [
+        117,
+        154,
+        108,
+        210,
+        202,
+        83,
+        96,
+        222
+      ]
+    },
+    {
+      "name": "Config",
+      "discriminator": [
+        155,
+        12,
+        170,
+        224,
+        30,
+        250,
+        204,
+        130
+      ]
+    },
+    {
+      "name": "Post",
+      "discriminator": [
+        8,
+        147,
+        90,
+        186,
+        185,
+        56,
+        192,
+        150
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AuthorityAccepted",
+      "discriminator": [
+        166,
+        192,
+        219,
+        188,
+        41,
+        209,
+        195,
+        26
+      ]
+    },
+    {
+      "name": "AuthorityProposed",
+      "discriminator": [
+        244,
+        117,
+        94,
+        112,
+        53,
+        151,
+        35,
+        89
+      ]
+    },
+    {
+      "name": "ConfigInitialized",
+      "discriminator": [
+        181,
+        49,
+        200,
+        156,
+        19,
+        167,
+        178,
+        91
+      ]
+    },
+    {
+      "name": "FeeSet",
+      "discriminator": [
+        113,
+        74,
+        216,
+        72,
+        193,
+        87,
+        4,
+        232
+      ]
+    },
+    {
+      "name": "PostPurchased",
+      "discriminator": [
+        147,
+        188,
+        234,
+        153,
+        74,
+        71,
+        111,
+        251
+      ]
+    },
+    {
+      "name": "PostRegistered",
+      "discriminator": [
+        58,
+        6,
+        182,
+        18,
+        191,
+        62,
+        47,
+        27
+      ]
+    },
+    {
+      "name": "PriceChanged",
+      "discriminator": [
+        251,
+        22,
+        83,
+        247,
+        153,
+        87,
+        138,
+        30
+      ]
+    },
+    {
+      "name": "SalesStatusChanged",
+      "discriminator": [
+        230,
+        122,
+        125,
+        216,
+        255,
+        226,
+        232,
+        137
+      ]
+    },
+    {
+      "name": "TipSent",
+      "discriminator": [
+        124,
+        3,
+        185,
+        130,
+        232,
+        65,
+        132,
+        235
+      ]
+    },
+    {
+      "name": "TreasurySet",
+      "discriminator": [
+        69,
+        231,
+        163,
+        135,
+        254,
+        194,
+        109,
+        166
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotAuthority",
+      "msg": "Only the program authority can do that."
+    },
+    {
+      "code": 6001,
+      "name": "FeeTooHigh",
+      "msg": "The fee can't be more than 5%."
+    },
+    {
+      "code": 6002,
+      "name": "ZeroAmount",
+      "msg": "The amount must be more than zero."
+    },
+    {
+      "code": 6003,
+      "name": "SelfTip",
+      "msg": "You can't tip yourself."
+    },
+    {
+      "code": 6004,
+      "name": "SelfPurchase",
+      "msg": "You can't buy your own post."
+    },
+    {
+      "code": 6005,
+      "name": "WrongTreasury",
+      "msg": "That isn't the treasury."
+    },
+    {
+      "code": 6006,
+      "name": "TreasuryAccountMissing",
+      "msg": "The treasury's token account is needed while there's a fee."
+    },
+    {
+      "code": 6007,
+      "name": "WrongMint",
+      "msg": "That token isn't accepted."
+    },
+    {
+      "code": 6008,
+      "name": "WrongCurrency",
+      "msg": "This post is sold in another currency."
+    },
+    {
+      "code": 6009,
+      "name": "SalesClosed",
+      "msg": "Sales of this post are closed."
+    },
+    {
+      "code": 6010,
+      "name": "PriceAboveMax",
+      "msg": "The price went up since you looked."
+    },
+    {
+      "code": 6011,
+      "name": "ZeroPrice",
+      "msg": "The price must be more than zero."
+    },
+    {
+      "code": 6012,
+      "name": "MathOverflow",
+      "msg": "The amount is too large."
+    },
+    {
+      "code": 6013,
+      "name": "NoPendingAuthority",
+      "msg": "There's no authority waiting to accept."
+    },
+    {
+      "code": 6014,
+      "name": "NotPendingAuthority",
+      "msg": "Only the proposed authority can accept."
+    },
+    {
+      "code": 6015,
+      "name": "InvalidKey",
+      "msg": "That isn't a valid authority or treasury."
+    },
+    {
+      "code": 6016,
+      "name": "WrongCreator",
+      "msg": "The payment must go to the post's creator."
+    }
+  ],
+  "types": [
+    {
+      "name": "Access",
+      "docs": [
+        "Proof that `buyer` paid for `post`. PDA [\"access\", post, buyer]: one per",
+        "buyer and post, so nobody pays twice, and anyone can check it."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "purchased_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuthorityAccepted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old",
+            "type": "pubkey"
+          },
+          {
+            "name": "new",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuthorityProposed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "pending",
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Config",
+      "docs": [
+        "One per program. PDA [\"config\"]."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "docs": [
+              "Sets the fee and the treasury, and hands itself over in two steps."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_authority",
+            "docs": [
+              "Proposed by `propose_authority`; becomes the authority when it signs `accept_authority`."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "treasury",
+            "docs": [
+              "Receives the fee (a wallet; its token account for token payments)."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "The one SPL token accepted (devnet: Circle's test USDC). Classic SPL Token only."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_bps",
+            "docs": [
+              "Basis points of each payment, 0 by default, never above fees::MAX_FEE_BPS."
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ConfigInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Currency",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Sol"
+          },
+          {
+            "name": "Token"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FeeSet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old_bps",
+            "type": "u16"
+          },
+          {
+            "name": "new_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Post",
+      "docs": [
+        "A paid post. PDA [\"post\", creator, post_id]. `post_id` is a hash of",
+        "Beryl's post id, never the content or anything personal. `creator` comes",
+        "first (offset 8) so \"this creator's posts\" is one memcmp filter."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "post_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "currency",
+            "type": {
+              "defined": {
+                "name": "Currency"
+              }
+            }
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "The token's mint for Currency::Token; the default key for SOL."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "docs": [
+              "In lamports, or the token's smallest unit."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "open",
+            "docs": [
+              "false = sales closed. People who bought keep their access."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "sales",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostPurchased",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "buyer",
+            "type": "pubkey"
+          },
+          {
+            "name": "access",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "None = SOL."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "post_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "currency",
+            "type": {
+              "defined": {
+                "name": "Currency"
+              }
+            }
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
+          },
+          {
+            "name": "old_price",
+            "type": "u64"
+          },
+          {
+            "name": "new_price",
+            "type": "u64"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SalesStatusChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
+          },
+          {
+            "name": "open",
+            "type": "bool"
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TipSent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tipper",
+            "type": "pubkey"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "docs": [
+              "None = SOL."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "amount",
+            "docs": [
+              "What the tipper paid in total; the creator got `amount - fee`."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "reference",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TreasurySet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old",
+            "type": "pubkey"
+          },
+          {
+            "name": "new",
+            "type": "pubkey"
+          }
+        ]
+      }
+    }
+  ]
+}

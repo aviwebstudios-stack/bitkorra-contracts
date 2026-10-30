@@ -1,0 +1,6 @@
+target
+# Program and deployer keypairs never go in the repo.
+*-keypair.json
+*.json.key
+test-ledger/
+.anchor/

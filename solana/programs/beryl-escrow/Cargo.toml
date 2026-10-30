@@ -1,0 +1,40 @@
+[package]
+name = "beryl-escrow"
+version = "0.1.0"
+description = "Beryl Escrow: P2P escrow for SOL or an SPL stablecoin, released to the buyer, refunded to the seller, or resolved by an arbiter"
+license = "MIT"
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "beryl_escrow"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = "1.2.1"
+# Owner decision (2026-10-29): the standard token CPI and account types (classic SPL Token only).
+anchor-spl = { version = "1.2.1", default-features = false, features = ["token", "token_2022", "solana-v3"] }
+# (token_2022 only because anchor-spl's IDL builder needs it compiled; the program accepts classic SPL Token only.)
+
+[dev-dependencies]
+litesvm = "0.10.0"
+# Owner decision (2026-10-29): test helpers for mints and token accounts.
+litesvm-token = "0.10"
+solana-message = "3.0.1"
+solana-transaction = "3.0.2"
+solana-signer = "3.0.0"
+solana-keypair = "3.0.1"
+proptest = "1"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
