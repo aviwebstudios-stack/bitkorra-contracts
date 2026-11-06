@@ -4,6 +4,15 @@ The on-chain code behind [BitKorra](https://bitkorra.vercel.app), a self-custody
 
 This repository holds BitKorra's own smart contracts and programs, written twice where it matters: **Solidity on Ethereum Sepolia** (Foundry) and **Rust with Anchor on Solana devnet** (LiteSVM tests). Every one is deployed, used by the live app, and linked below with its explorer page and real transactions.
 
+## See it running
+
+| App | Link | What uses these contracts |
+|---|---|---|
+| **BitKorra** | https://bitkorra.vercel.app | the wallet: swap, P2P escrow, tips, paid posts, `.korra` names |
+| **Beryl** | https://berylchat.vercel.app | the social app: tips and paid posts on posts and profiles, `.beryl` names (the same registry) |
+
+**Try the demo** on either site: a ready-made account opens in a few seconds with no wallet, email or PIN, holding test coins and its own `.korra` name. A demo account can send, swap, tip and unlock a paid post for real on Sepolia and Solana devnet, in tiny capped amounts, so you can follow its transactions in the explorers linked below. It's deleted after 24 hours.
+
 > **Test networks only.** Everything here runs on Ethereum Sepolia and Solana devnet, where coins have no value. Nothing has been audited. Do not deploy any of it to a real network as it is. A professional audit, multisig owners and a legal review come before any real money.
 
 ## What's here

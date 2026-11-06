@@ -16,3 +16,17 @@ solana/target
 solana/.anchor/
 solana/test-ledger/
 target/
+
+# Local tool settings
+CLAUDE.md
+.claude/
+AGENTS.md
+GEMINI.md
+.cursor/
+.cursorrules
+.windsurf/
+.windsurfrules
+.aider*
+.continue/
+.codex/
+.github/copilot-instructions.md
